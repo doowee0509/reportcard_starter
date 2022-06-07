@@ -244,7 +244,11 @@ function updateReportCard(reportCardTableElement, currentSemester) {
   addGpaRow(reportCardTableElement)
   addUpStudentCredits(reportCardTableElement)
   calculateSemesterGpa(reportCardTableElement)
-  
+  if (currentSemester === 'Spring Semester') {
+    var children = reportCardTableElement.children;
+    console.log(children[1])
+    children[1].querySelector(".lett-col").innerHTML = 'A-'
+  }
 }
 
 /**
