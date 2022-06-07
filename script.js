@@ -11,11 +11,11 @@ By the end of the lab, all tests in the report should be passing.
 
 const studentInformation = {
   name: "Duy Nguyen",
-  grade: "A",
+  grade: "a",
   advisor: "Rebecca",
   major: "Computer Science",
   graduationYear: "2024",
-  imageUrl: "https://swebtoon-phinf.pstatic.net/20210517_60/1621234995956phIc2_JPEG/thumbnail.jpg",
+  imageUrl: "https://i.pinimg.com/originals/b6/dc/ee/b6dcee77fc7780f61fd135e6aa56a34e.png",
 }
 
 let semester = "Spring Semester"
@@ -65,8 +65,8 @@ const stGradeLevel = document.querySelector("#student-grade-level")
 const stGraduationYear = document.querySelector("#student-graduation-year")
 const stImg = document.querySelector("#student-image")
 const dropdownLabel = document.querySelector(".dropdown-label")
-const dropdownEl = document.querySelector(".dropdown")
-const dropdownElement = document.querySelector(".dropdown-menu") 
+const dropdownElement = document.querySelector(".dropdown")
+const dropdownMenu = document.querySelector(".dropdown-menu") 
 const dropdownButtonElement = document.querySelector(".dropdown-button")
 const fallSemesterElement = document.querySelector("#fall-semester")
 const springSemesterElement = document.querySelector("#spring-semester")
@@ -242,9 +242,9 @@ function updateReportCard(reportCardTableElement, currentSemester) {
   });
   addTotalsRow(reportCardTableElement)
   addGpaRow(reportCardTableElement)
-  document.querySelector('#total-credits').innerHTML = addUpStudentCredits(reportCardTableElement) + ' credits'
-  document.querySelector('#total-pts').innerHTML = calculateSemesterGpa(reportCardTableElement)[0] 
-  document.querySelector('#gpa').innerHTML = calculateSemesterGpa(reportCardTableElement)[1]
+  addUpStudentCredits(reportCardTableElement)
+  calculateSemesterGpa(reportCardTableElement)
+  
 }
 
 /**
@@ -259,10 +259,9 @@ function updateReportCard(reportCardTableElement, currentSemester) {
  */
 function closeDropdown(dropdownElement) {
   // code goes here
-  // if (!dropdownElement.classList.contains('closed')) {
-  //   dropdownElement.classList.add('closed');
-  // }
-  dropdownElement.classList.add('closed');
+  if (!dropdownElement.classList.contains('closed')) {
+    dropdownElement.classList.add('closed');
+  }
 }
 
 function openDropdown(dropdownElement) {
@@ -300,25 +299,25 @@ function addEventListeners(
   // Each callback function one should update the `semester` variable,
   // call the `updateReportCard` function, and close the dropdown
   dropdownButtonElement.addEventListener("click", event => {
-    openDropdown(dropdownEl);
+    openDropdown(dropdownElement);
   });
 
   springSemesterElement.addEventListener("click", event => {
     semester = springSemesterElement.textContent
-    closeDropdown(dropdownEl);
     updateReportCard(reportCardTableElement, semester)
+    closeDropdown(dropdownElement);
   });
 
   fallSemesterElement.addEventListener("click", event => {
     semester = fallSemesterElement.textContent
-    closeDropdown(dropdownEl);
     updateReportCard(reportCardTableElement, semester)
+    closeDropdown(dropdownElement);
   });
 
   winterTermElement.addEventListener("click", event => {
     semester = winterTermElement.textContent
-    closeDropdown(dropdownEl);
     updateReportCard(reportCardTableElement, semester)
+    closeDropdown(dropdownElement);
   });
 }
 
@@ -345,7 +344,7 @@ function addUpStudentCredits(reportCardTableElement) {
       total += parseInt(tableChild.children[3].children[0].innerHTML)
     }
   }
-  return total
+  reportCardTableElement.querySelector('#total-credits').innerHTML = total + ' credits'
 }
 
 /**
@@ -373,12 +372,14 @@ function calculateSemesterGpa(reportCardTableElement) {
       count++
     }
   }
-  return [total, total / count]
+  reportCardTableElement.querySelector('#total-pts').innerHTML = total
+  reportCardTableElement.querySelector('#gpa').innerHTML = total / count
 }
 
 window.onload = function () {
   // execute your functions here to make sure they run as soon as the page loads
   populateStudentInfo(studentInformation)
+  updateReportCard(reportCardTableElement, semester)
   addEventListeners(
     dropdownElement,
     dropdownButtonElement,
